@@ -21,6 +21,13 @@ function CreateArea(props) {
         })
     }
 
+    //hook for expanding box
+    const [isExpanded, setExpanded] = useState(false);
+
+    function expand() {
+        setExpanded(true);
+    }
+
     function submitNote(event) {
         props.onAdd(note);
         setNote({
@@ -33,11 +40,20 @@ function CreateArea(props) {
     return (
         <div>
             <form className="create-note">
-                <input name="title" onChange={handleChange} value={note.title} placeholder="Title" />
-                <textarea name="content" onChange={handleChange} value={note.content} placeholder="Write something cool" rows="3" />
-                <Fab onClick={submitNote}>
-                    <AddIcon />
-                </Fab>
+
+                {isExpanded ? (
+                    <input
+                        name="title"
+                        onChange={handleChange}
+                        value={note.title}
+                        placeholder="Title" />
+                ) : null}
+                <textarea name="content" onChange={handleChange} onClick={expand} value={note.content} placeholder="Write something cool" rows={isExpanded ? 3 : 1} />
+                <Zoom in={isExpanded}>
+                    <Fab onClick={submitNote}>
+                        <AddIcon />
+                    </Fab>
+                </Zoom>
             </form>
         </div>
     )
